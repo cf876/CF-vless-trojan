@@ -145,7 +145,7 @@ export default {
 		}
           default:
             // return new Response('Not found', { status: 404 });
-            // For any other path, reverse proxy to 'ramdom website' and return the original response, caching it in the process
+            // For any other path, reverse พร็อกซี to 'ramdom website' and return the original response, caching it in the process
             if (cn_hostnames.includes('')) {
             return new Response(JSON.stringify(request.cf, null, 4), {
               status: 200,
@@ -160,24 +160,24 @@ export default {
             newHeaders.set("x-forwarded-for", "1.2.3.4");
             newHeaders.set("x-real-ip", "1.2.3.4");
             newHeaders.set("referer", "https://www.google.com/search?q=edtunnel");
-            // Use fetch to proxy the request to 15 different domains
-            const proxyUrl = "https://" + randomHostname + url.pathname + url.search;
-            let modifiedRequest = new Request(proxyUrl, {
+            // Use fetch to พร็อกซี the request to 15 different domains
+            const พร็อกซีUrl = "https://" + randomHostname + url.pathname + url.search;
+            let modifiedRequest = new Request(พร็อกซีUrl, {
               method: request.method,
               headers: newHeaders,
               body: request.body,
               redirect: "manual",
             });
-            const proxyResponse = await fetch(modifiedRequest, { redirect: "manual" });
+            const พร็อกซีResponse = await fetch(modifiedRequest, { redirect: "manual" });
             // Check for 302 or 301 redirect status and return an error response
-            if ([301, 302].includes(proxyResponse.status)) {
+            if ([301, 302].includes(พร็อกซีResponse.status)) {
               return new Response(`Redirects to ${randomHostname} are not allowed.`, {
                 status: 403,
                 statusText: "Forbidden",
               });
             }
-            // Return the response from the proxy server
-            return proxyResponse;
+            // Return the response from the พร็อกซี server
+            return พร็อกซีResponse;
         }
       }
       return await handle\u0076\u006c\u0065\u0073\u0073WebSocket(request);
@@ -265,7 +265,7 @@ async function handle\u0076\u006c\u0065\u0073\u0073WebSocket(request) {
         return `[${chosenPrefix}${hex[0]}${hex[1]}:${hex[2]}${hex[3]}]`;
       }
 
-      async function getIPv6ProxyAddress(domain) {
+      async function getIPv6พร็อกซีAddress(domain) {
         try {
           const dnsQuery = await fetch(`https://1.1.1.1/dns-query?name=${domain}&type=A`, {
             headers: {
@@ -289,7 +289,7 @@ async function handle\u0076\u006c\u0065\u0073\u0073WebSocket(request) {
 
       async function retry() {
         try {
-          const ยืมยี่ห้ออื่น = await getIPv6ProxyAddress(result.addressRemote);
+          const ยืมยี่ห้ออื่น = await getIPv6พร็อกซีAddress(result.addressRemote);
           console.log(`尝试通过แนท64 IPv6地址 ${ยืมยี่ห้ออื่น} 连接...`);
           const tcpSocket = await connect({
             hostname: ยืมยี่ห้ออื่น,
@@ -1079,7 +1079,7 @@ proxies:
     headers:
       Host: ${hostName}
 
-proxy-groups:
+พร็อกซี-groups:
 - name: 负载均衡
   type: load-balance
   url: http://www.gstatic.com/generate_204
@@ -1170,7 +1170,7 @@ return `{
 	  "dns": {
 		"servers": [
 		  {
-			"tag": "proxydns",
+			"tag": "พร็อกซีdns",
 			"address": "tls://8.8.8.8/dns-query",
 			"detour": "select"
 		  },
@@ -1192,7 +1192,7 @@ return `{
 		  },
 		  {
 			"Cแคลช_mode": "Global",
-			"server": "proxydns"
+			"server": "พร็อกซีdns"
 		  },
 		  {
 			"Cแคลช_mode": "Direct",
@@ -1204,7 +1204,7 @@ return `{
 		  },
 		  {
 			"rule_set": "geosite-geolocation-!cn",
-			"server": "proxydns"
+			"server": "พร็อกซีdns"
 		  },
 		  {
 			"rule_set": "geosite-geolocation-!cn",
@@ -1221,7 +1221,7 @@ return `{
 		  "inet6_range": "fc00::/18"
 		},
 		"independent_cache": true,
-		"final": "proxydns"
+		"final": "พร็อกซีdns"
 	  },
 	  "inbounds": [
 		{
@@ -1762,7 +1762,7 @@ proxies:
     headers:
       Host: ${hostName}
 
-proxy-groups:
+พร็อกซี-groups:
 - name: 负载均衡
   type: load-balance
   url: http://www.gstatic.com/generate_204
@@ -1832,7 +1832,7 @@ return `{
 		  "dns": {
 			"servers": [
 			  {
-				"tag": "proxydns",
+				"tag": "พร็อกซีdns",
 				"address": "tls://8.8.8.8/dns-query",
 				"detour": "select"
 			  },
@@ -1854,7 +1854,7 @@ return `{
 			  },
 			  {
 				"Cแคลช_mode": "Global",
-				"server": "proxydns"
+				"server": "พร็อกซีdns"
 			  },
 			  {
 				"Cแคลช_mode": "Direct",
@@ -1866,7 +1866,7 @@ return `{
 			  },
 			  {
 				"rule_set": "geosite-geolocation-!cn",
-				"server": "proxydns"
+				"server": "พร็อกซีdns"
 			  },
 			  {
 				"rule_set": "geosite-geolocation-!cn",
@@ -1883,7 +1883,7 @@ return `{
 			  "inet6_range": "fc00::/18"
 			},
 			"independent_cache": true,
-			"final": "proxydns"
+			"final": "พร็อกซีdns"
 		  },
 		  "inbounds": [
 			{
