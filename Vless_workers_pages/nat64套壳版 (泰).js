@@ -1,7 +1,7 @@
 //แนท64自动填充ยืมยี่ห้ออื่น，无需且不支持ยืมยี่ห้ออื่น设置
 import { connect } from "cloudflare:sockets";
 const WS_READY_STATE_OPEN = 1;
-let userID = "123e4567-e89b-12d3-a456-426655440000";
+let หมายเลขผู้ใช้ = "123e4567-e89b-12d3-a456-426655440000";
 const cn_hostnames = [''];
 let CDNIP = '\u0077\u0077\u0077\u002e\u0076\u0069\u0073\u0061\u002e\u0063\u006f\u006d\u002e\u0073\u0067'
 // http_ip
@@ -47,7 +47,7 @@ export default {
    */
   async fetch(request, env, ctx) {
     try {
-      userID = env.uuid || userID;
+      หมายเลขผู้ใช้ = env.uuid || หมายเลขผู้ใช้;
       CDNIP = env.cdnip || CDNIP;
 	  IP1 = env.ip1 || IP1;
 	  IP2 = env.ip2 || IP2;
@@ -80,8 +80,8 @@ export default {
       if (!upgradeHeader || upgradeHeader !== "websocket") {
         const url = new URL(request.url);
         switch (url.pathname) {
-          case `/${userID}`: {
-            const \u0076\u006c\u0065\u0073\u0073Config = get\u0076\u006c\u0065\u0073\u0073Config(userID, request.headers.get("Host"));
+          case `/${หมายเลขผู้ใช้}`: {
+            const \u0076\u006c\u0065\u0073\u0073Config = get\u0076\u006c\u0065\u0073\u0073Config(หมายเลขผู้ใช้, request.headers.get("Host"));
             return new Response(`${\u0076\u006c\u0065\u0073\u0073Config}`, {
               status: 200,
               headers: {
@@ -89,8 +89,8 @@ export default {
               },
             });
           }
-		  case `/${userID}/ty`: {
-			const tyConfig = gettyConfig(userID, request.headers.get('Host'));
+		  case `/${หมายเลขผู้ใช้}/ty`: {
+			const tyConfig = gettyConfig(หมายเลขผู้ใช้, request.headers.get('Host'));
 			return new Response(`${tyConfig}`, {
 				status: 200,
 				headers: {
@@ -98,8 +98,8 @@ export default {
 				}
 			});
 		}
-		case `/${userID}/cl`: {
-			const clConfig = getclConfig(userID, request.headers.get('Host'));
+		case `/${หมายเลขผู้ใช้}/cl`: {
+			const clConfig = getclConfig(หมายเลขผู้ใช้, request.headers.get('Host'));
 			return new Response(`${clConfig}`, {
 				status: 200,
 				headers: {
@@ -107,8 +107,8 @@ export default {
 				}
 			});
 		}
-		case `/${userID}/sb`: {
-			const sbConfig = getsbConfig(userID, request.headers.get('Host'));
+		case `/${หมายเลขผู้ใช้}/sb`: {
+			const sbConfig = getsbConfig(หมายเลขผู้ใช้, request.headers.get('Host'));
 			return new Response(`${sbConfig}`, {
 				status: 200,
 				headers: {
@@ -116,8 +116,8 @@ export default {
 				}
 			});
 		}
-		case `/${userID}/pty`: {
-			const ptyConfig = getptyConfig(userID, request.headers.get('Host'));
+		case `/${หมายเลขผู้ใช้}/pty`: {
+			const ptyConfig = getptyConfig(หมายเลขผู้ใช้, request.headers.get('Host'));
 			return new Response(`${ptyConfig}`, {
 				status: 200,
 				headers: {
@@ -125,8 +125,8 @@ export default {
 				}
 			});
 		}
-		case `/${userID}/pcl`: {
-			const pclConfig = getpclConfig(userID, request.headers.get('Host'));
+		case `/${หมายเลขผู้ใช้}/pcl`: {
+			const pclConfig = getpclConfig(หมายเลขผู้ใช้, request.headers.get('Host'));
 			return new Response(`${pclConfig}`, {
 				status: 200,
 				headers: {
@@ -134,8 +134,8 @@ export default {
 				}
 			});
 		}
-		case `/${userID}/psb`: {
-			const psbConfig = getpsbConfig(userID, request.headers.get('Host'));
+		case `/${หมายเลขผู้ใช้}/psb`: {
+			const psbConfig = getpsbConfig(หมายเลขผู้ใช้, request.headers.get('Host'));
 			return new Response(`${psbConfig}`, {
 				status: 200,
 				headers: {
@@ -215,7 +215,7 @@ async function handle\u0076\u006c\u0065\u0073\u0073WebSocket(request) {
         return;
       }
 
-      const result = parse\u0076\u006c\u0065\u0073\u0073Header(chunk, userID);
+      const result = parse\u0076\u006c\u0065\u0073\u0073Header(chunk, หมายเลขผู้ใช้);
       if (result.hasError) {
         throw new Error(result.message);
       }
@@ -367,7 +367,7 @@ function createWebSocketReadableStream(ws, earlyDataHeader) {
   });
 }
 
-function parse\u0076\u006c\u0065\u0073\u0073Header(buffer, userID) {
+function parse\u0076\u006c\u0065\u0073\u0073Header(buffer, หมายเลขผู้ใช้) {
   if (buffer.byteLength < 24) {
     return { hasError: true, message: '无效的头部长度' };
   }
@@ -376,7 +376,7 @@ function parse\u0076\u006c\u0065\u0073\u0073Header(buffer, userID) {
   const version = new Uint8Array(buffer.slice(0, 1));
   
   const uuid = formatUUID(new Uint8Array(buffer.slice(1, 17)));
-  if (uuid !== userID) {
+  if (uuid !== หมายเลขผู้ใช้) {
     return { hasError: true, message: '无效的用户' };
   }
   
@@ -547,25 +547,25 @@ async function handleUDPOutBound(webSocket, \u0076\u006c\u0065\u0073\u0073Respon
 }
 /**
  *
- * @param {string} userID
- * @param {string | null} hostName
+ * @param {string} หมายเลขผู้ใช้
+ * @param {string | null} ชื่อโฮสต์
  * @returns {string}
  */
-function get\u0076\u006c\u0065\u0073\u0073Config(userID, hostName) {
-  const w\u0076\u006c\u0065\u0073\u0073ws = `\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${CDNIP}:8880?encryption=none&security=none&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${hostName}`;
-  const p\u0076\u006c\u0065\u0073\u0073wstls = `\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${CDNIP}:8443?encryption=none&security=tls&type=ws&host=${hostName}&sni=${hostName}&fp=random&path=%2F%3Fed%3D2560#${hostName}`;
+function get\u0076\u006c\u0065\u0073\u0073Config(หมายเลขผู้ใช้, ชื่อโฮสต์) {
+  const w\u0076\u006c\u0065\u0073\u0073ws = `\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${CDNIP}:8880?encryption=none&security=none&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#${ชื่อโฮสต์}`;
+  const p\u0076\u006c\u0065\u0073\u0073wstls = `\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${CDNIP}:8443?encryption=none&security=tls&type=ws&host=${ชื่อโฮสต์}&sni=${ชื่อโฮสต์}&fp=random&path=%2F%3Fed%3D2560#${ชื่อโฮสต์}`;
   const note = `甬哥博客地址：https://ygkkk.blogspot.com\n甬哥YouTube频道：https://www.youtube.com/@ygkkk\n甬哥TG电报群组：https://t.me/ygkkktg\n甬哥TG电报频道：https://t.me/ygkkktgpd\n\nยืมยี่ห้ออื่น使用แนท64自动生成，无需设置`;
-  const ty = `https://${hostName}/${userID}/ty`
-  const cl = `https://${hostName}/${userID}/cl`
-  const sb = `https://${hostName}/${userID}/sb`
-  const pty = `https://${hostName}/${userID}/pty`
-  const pcl = `https://${hostName}/${userID}/pcl`
-  const psb = `https://${hostName}/${userID}/psb`
+  const ty = `https://${ชื่อโฮสต์}/${หมายเลขผู้ใช้}/ty`
+  const cl = `https://${ชื่อโฮสต์}/${หมายเลขผู้ใช้}/cl`
+  const sb = `https://${ชื่อโฮสต์}/${หมายเลขผู้ใช้}/sb`
+  const pty = `https://${ชื่อโฮสต์}/${หมายเลขผู้ใช้}/pty`
+  const pcl = `https://${ชื่อโฮสต์}/${หมายเลขผู้ใช้}/pcl`
+  const psb = `https://${ชื่อโฮสต์}/${หมายเลขผู้ใช้}/psb`
 
-  const wk\u0076\u006c\u0065\u0073\u0073share = btoa(`\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP1}:${PT1}?encryption=none&security=none&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V1_${IP1}_${PT1}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP2}:${PT2}?encryption=none&security=none&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V2_${IP2}_${PT2}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP3}:${PT3}?encryption=none&security=none&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V3_${IP3}_${PT3}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP4}:${PT4}?encryption=none&security=none&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V4_${IP4}_${PT4}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP5}:${PT5}?encryption=none&security=none&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V5_${IP5}_${PT5}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP6}:${PT6}?encryption=none&security=none&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V6_${IP6}_${PT6}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP7}:${PT7}?encryption=none&security=none&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V7_${IP7}_${PT7}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP8}:${PT8}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V8_${IP8}_${PT8}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP9}:${PT9}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V9_${IP9}_${PT9}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP10}:${PT10}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V10_${IP10}_${PT10}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP11}:${PT11}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V11_${IP11}_${PT11}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP12}:${PT12}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V12_${IP12}_${PT12}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP13}:${PT13}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V13_${IP13}_${PT13}`);
+  const wk\u0076\u006c\u0065\u0073\u0073share = btoa(`\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP1}:${PT1}?encryption=none&security=none&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V1_${IP1}_${PT1}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP2}:${PT2}?encryption=none&security=none&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V2_${IP2}_${PT2}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP3}:${PT3}?encryption=none&security=none&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V3_${IP3}_${PT3}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP4}:${PT4}?encryption=none&security=none&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V4_${IP4}_${PT4}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP5}:${PT5}?encryption=none&security=none&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V5_${IP5}_${PT5}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP6}:${PT6}?encryption=none&security=none&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V6_${IP6}_${PT6}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP7}:${PT7}?encryption=none&security=none&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V7_${IP7}_${PT7}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP8}:${PT8}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V8_${IP8}_${PT8}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP9}:${PT9}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V9_${IP9}_${PT9}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP10}:${PT10}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V10_${IP10}_${PT10}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP11}:${PT11}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V11_${IP11}_${PT11}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP12}:${PT12}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V12_${IP12}_${PT12}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP13}:${PT13}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V13_${IP13}_${PT13}`);
 
 
-  const pg\u0076\u006c\u0065\u0073\u0073share = btoa(`\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP8}:${PT8}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V8_${IP8}_${PT8}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP9}:${PT9}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V9_${IP9}_${PT9}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP10}:${PT10}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V10_${IP10}_${PT10}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP11}:${PT11}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V11_${IP11}_${PT11}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP12}:${PT12}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V12_${IP12}_${PT12}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP13}:${PT13}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V13_${IP13}_${PT13}`);	
+  const pg\u0076\u006c\u0065\u0073\u0073share = btoa(`\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP8}:${PT8}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V8_${IP8}_${PT8}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP9}:${PT9}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V9_${IP9}_${PT9}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP10}:${PT10}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V10_${IP10}_${PT10}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP11}:${PT11}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V11_${IP11}_${PT11}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP12}:${PT12}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V12_${IP12}_${PT12}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP13}:${PT13}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V13_${IP13}_${PT13}`);	
 
 	
   const noteshow = note.replace(/\n/g, '<br>');
@@ -597,7 +597,7 @@ function copyToClipboard(text) {
 }
 </script>
 `;
-if (hostName.includes("workers.dev")) {
+if (ชื่อโฮสต์.includes("workers.dev")) {
 return `
 <br>
 <br>
@@ -634,9 +634,9 @@ ${displayHtml}
             <ul>
                 <li>客户端地址(address)：自定义的域名 或者 优选域名 或者 优选IP 或者 反代IP</li>
                 <li>端口(port)：7个http端口可任意选择(80、8080、8880、2052、2082、2086、2095)，或反代IP对应端口</li>
-                <li>用户ID(uuid)：${userID}</li>
+                <li>用户ID(uuid)：${หมายเลขผู้ใช้}</li>
                 <li>传输协议(network)：ws 或者 websocket</li>
-                <li>伪装域名(host)：${hostName}</li>
+                <li>伪装域名(host)：${ชื่อโฮสต์}</li>
                 <li>路径(path)：/?ed=2560</li>
 		<li>传输安全(TLS)：关闭</li>
             </ul>
@@ -665,9 +665,9 @@ ${displayHtml}
             <ul>
                 <li>客户端地址(address)：自定义的域名 或者 优选域名 或者 优选IP 或者 反代IP</li>
                 <li>端口(port)：6个https端口可任意选择(443、8443、2053、2083、2087、2096)，或反代IP对应端口</li>
-                <li>用户ID(uuid)：${userID}</li>
+                <li>用户ID(uuid)：${หมายเลขผู้ใช้}</li>
                 <li>传输协议(network)：ws 或者 websocket</li>
-                <li>伪装域名(host)：${hostName}</li>
+                <li>伪装域名(host)：${ชื่อโฮสต์}</li>
                 <li>路径(path)：/?ed=2560</li>
                 <li>传输安全(TLS)：开启</li>
                 <li>跳过证书验证(allowlnsecure)：false</li>
@@ -783,9 +783,9 @@ ${displayHtml}
             <ul>
                 <li>客户端地址(address)：自定义的域名 或者 优选域名 或者 优选IP 或者 反代IP</li>
                 <li>端口(port)：6个https端口可任意选择(443、8443、2053、2083、2087、2096)，或反代IP对应端口</li>
-                <li>用户ID(uuid)：${userID}</li>
+                <li>用户ID(uuid)：${หมายเลขผู้ใช้}</li>
                 <li>传输协议(network)：ws 或者 websocket</li>
-                <li>伪装域名(host)：${hostName}</li>
+                <li>伪装域名(host)：${ชื่อโฮสต์}</li>
                 <li>路径(path)：/?ed=2560</li>
                 <li>传输安全(TLS)：开启</li>
                 <li>跳过证书验证(allowlnsecure)：false</li>
@@ -867,12 +867,12 @@ ${displayHtml}
   }
 }
 
-function gettyConfig(userID, hostName) {
-	const \u0076\u006c\u0065\u0073\u0073share = btoa(`\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP1}:${PT1}?encryption=none&security=none&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V1_${IP1}_${PT1}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP2}:${PT2}?encryption=none&security=none&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V2_${IP2}_${PT2}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP3}:${PT3}?encryption=none&security=none&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V3_${IP3}_${PT3}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP4}:${PT4}?encryption=none&security=none&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V4_${IP4}_${PT4}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP5}:${PT5}?encryption=none&security=none&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V5_${IP5}_${PT5}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP6}:${PT6}?encryption=none&security=none&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V6_${IP6}_${PT6}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP7}:${PT7}?encryption=none&security=none&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V7_${IP7}_${PT7}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP8}:${PT8}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V8_${IP8}_${PT8}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP9}:${PT9}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V9_${IP9}_${PT9}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP10}:${PT10}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V10_${IP10}_${PT10}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP11}:${PT11}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V11_${IP11}_${PT11}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP12}:${PT12}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V12_${IP12}_${PT12}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP13}:${PT13}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V13_${IP13}_${PT13}`);
+function gettyConfig(หมายเลขผู้ใช้, ชื่อโฮสต์) {
+	const \u0076\u006c\u0065\u0073\u0073share = btoa(`\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP1}:${PT1}?encryption=none&security=none&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V1_${IP1}_${PT1}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP2}:${PT2}?encryption=none&security=none&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V2_${IP2}_${PT2}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP3}:${PT3}?encryption=none&security=none&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V3_${IP3}_${PT3}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP4}:${PT4}?encryption=none&security=none&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V4_${IP4}_${PT4}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP5}:${PT5}?encryption=none&security=none&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V5_${IP5}_${PT5}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP6}:${PT6}?encryption=none&security=none&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V6_${IP6}_${PT6}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP7}:${PT7}?encryption=none&security=none&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V7_${IP7}_${PT7}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP8}:${PT8}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V8_${IP8}_${PT8}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP9}:${PT9}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V9_${IP9}_${PT9}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP10}:${PT10}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V10_${IP10}_${PT10}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP11}:${PT11}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V11_${IP11}_${PT11}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP12}:${PT12}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V12_${IP12}_${PT12}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP13}:${PT13}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V13_${IP13}_${PT13}`);
 		return `${\u0076\u006c\u0065\u0073\u0073share}`
 	}
 
-function getclConfig(userID, hostName) {
+function getclConfig(หมายเลขผู้ใช้, ชื่อโฮสต์) {
 return `
 port: 7890
 allow-lan: true
@@ -907,177 +907,177 @@ proxies:
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP1.replace(/[\[\]]/g, '')}
   port: ${PT1}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: false
   network: ws
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V2_${IP2}_${PT2}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP2.replace(/[\[\]]/g, '')}
   port: ${PT2}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: false
   network: ws
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V3_${IP3}_${PT3}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP3.replace(/[\[\]]/g, '')}
   port: ${PT3}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: false
   network: ws
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V4_${IP4}_${PT4}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP4.replace(/[\[\]]/g, '')}
   port: ${PT4}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: false
   network: ws
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V5_${IP5}_${PT5}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP5.replace(/[\[\]]/g, '')}
   port: ${PT5}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: false
   network: ws
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V6_${IP6}_${PT6}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP6.replace(/[\[\]]/g, '')}
   port: ${PT6}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: false
   network: ws
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V7_${IP7}_${PT7}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP7.replace(/[\[\]]/g, '')}
   port: ${PT7}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: false
   network: ws
-  servername: ${hostName}
+  servername: ${ชื่อโฮสต์}
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V8_${IP8}_${PT8}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP8.replace(/[\[\]]/g, '')}
   port: ${PT8}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: true
   network: ws
-  servername: ${hostName}
+  servername: ${ชื่อโฮสต์}
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V9_${IP9}_${PT9}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP9.replace(/[\[\]]/g, '')}
   port: ${PT9}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: true
   network: ws
-  servername: ${hostName}
+  servername: ${ชื่อโฮสต์}
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V10_${IP10}_${PT10}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP10.replace(/[\[\]]/g, '')}
   port: ${PT10}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: true
   network: ws
-  servername: ${hostName}
+  servername: ${ชื่อโฮสต์}
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V11_${IP11}_${PT11}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP11.replace(/[\[\]]/g, '')}
   port: ${PT11}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: true
   network: ws
-  servername: ${hostName}
+  servername: ${ชื่อโฮสต์}
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V12_${IP12}_${PT12}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP12.replace(/[\[\]]/g, '')}
   port: ${PT12}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: true
   network: ws
-  servername: ${hostName}
+  servername: ${ชื่อโฮสต์}
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V13_${IP13}_${PT13}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP13.replace(/[\[\]]/g, '')}
   port: ${PT13}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: true
   network: ws
-  servername: ${hostName}
+  servername: ${ชื่อโฮสต์}
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 พร็อกซี-groups:
 - name: 负载均衡
@@ -1145,7 +1145,7 @@ rules:
   - MATCH,🌍选择พร็อกซี`
 }
 	
-function getsbConfig(userID, hostName) {
+function getsbConfig(หมายเลขผู้ใช้, ชื่อโฮสต์) {
 return `{
 	  "log": {
 		"disabled": false,
@@ -1268,14 +1268,14 @@ return `{
 		  "transport": {
 			"headers": {
 			  "Host": [
-				"${hostName}"
+				"${ชื่อโฮสต์}"
 			  ]
 			},
 			"path": "/?ed=2560",
 			"type": "ws"
 		  },
 		  "type": "\u0076\u006c\u0065\u0073\u0073",
-		  "uuid": "${userID}"
+		  "uuid": "${หมายเลขผู้ใช้}"
 		},
 		{
 		  "server": "${IP2}",
@@ -1285,14 +1285,14 @@ return `{
 		  "transport": {
 			"headers": {
 			  "Host": [
-				"${hostName}"
+				"${ชื่อโฮสต์}"
 			  ]
 			},
 			"path": "/?ed=2560",
 			"type": "ws"
 		  },
 		  "type": "\u0076\u006c\u0065\u0073\u0073",
-		  "uuid": "${userID}"
+		  "uuid": "${หมายเลขผู้ใช้}"
 		},
 		{
 		  "server": "${IP3}",
@@ -1302,14 +1302,14 @@ return `{
 		  "transport": {
 			"headers": {
 			  "Host": [
-				"${hostName}"
+				"${ชื่อโฮสต์}"
 			  ]
 			},
 			"path": "/?ed=2560",
 			"type": "ws"
 		  },
 		  "type": "\u0076\u006c\u0065\u0073\u0073",
-		  "uuid": "${userID}"
+		  "uuid": "${หมายเลขผู้ใช้}"
 		},
 		{
 		  "server": "${IP4}",
@@ -1319,14 +1319,14 @@ return `{
 		  "transport": {
 			"headers": {
 			  "Host": [
-				"${hostName}"
+				"${ชื่อโฮสต์}"
 			  ]
 			},
 			"path": "/?ed=2560",
 			"type": "ws"
 		  },
 		  "type": "\u0076\u006c\u0065\u0073\u0073",
-		  "uuid": "${userID}"
+		  "uuid": "${หมายเลขผู้ใช้}"
 		},
 		{
 		  "server": "${IP5}",
@@ -1336,14 +1336,14 @@ return `{
 		  "transport": {
 			"headers": {
 			  "Host": [
-				"${hostName}"
+				"${ชื่อโฮสต์}"
 			  ]
 			},
 			"path": "/?ed=2560",
 			"type": "ws"
 		  },
 		  "type": "\u0076\u006c\u0065\u0073\u0073",
-		  "uuid": "${userID}"
+		  "uuid": "${หมายเลขผู้ใช้}"
 		},
 		{
 		  "server": "${IP6}",
@@ -1353,14 +1353,14 @@ return `{
 		  "transport": {
 			"headers": {
 			  "Host": [
-				"${hostName}"
+				"${ชื่อโฮสต์}"
 			  ]
 			},
 			"path": "/?ed=2560",
 			"type": "ws"
 		  },
 		  "type": "\u0076\u006c\u0065\u0073\u0073",
-		  "uuid": "${userID}"
+		  "uuid": "${หมายเลขผู้ใช้}"
 		},
 		{
 		  "server": "${IP7}",
@@ -1370,14 +1370,14 @@ return `{
 		  "transport": {
 			"headers": {
 			  "Host": [
-				"${hostName}"
+				"${ชื่อโฮสต์}"
 			  ]
 			},
 			"path": "/?ed=2560",
 			"type": "ws"
 		  },
 		  "type": "\u0076\u006c\u0065\u0073\u0073",
-		  "uuid": "${userID}"
+		  "uuid": "${หมายเลขผู้ใช้}"
 		},
 		{     
 		  "server": "${IP8}",
@@ -1385,7 +1385,7 @@ return `{
 		  "tag": "CF_V8_${IP8}_${PT8}",
 		  "tls": {
 			"enabled": true,
-			"server_name": "${hostName}",
+			"server_name": "${ชื่อโฮสต์}",
 			"insecure": false,
 			"utls": {
 			  "enabled": true,
@@ -1396,14 +1396,14 @@ return `{
 		  "transport": {
 			"headers": {
 			  "Host": [
-				"${hostName}"
+				"${ชื่อโฮสต์}"
 			  ]
 			},
 			"path": "/?ed=2560",
 			"type": "ws"
 		  },
 		  "type": "\u0076\u006c\u0065\u0073\u0073",
-		  "uuid": "${userID}"
+		  "uuid": "${หมายเลขผู้ใช้}"
 		},
 		{
 		  "server": "${IP9}",
@@ -1411,7 +1411,7 @@ return `{
 		  "tag": "CF_V9_${IP9}_${PT9}",
 		  "tls": {
 			"enabled": true,
-			"server_name": "${hostName}",
+			"server_name": "${ชื่อโฮสต์}",
 			"insecure": false,
 			"utls": {
 			  "enabled": true,
@@ -1422,14 +1422,14 @@ return `{
 		  "transport": {
 			"headers": {
 			  "Host": [
-				"${hostName}"
+				"${ชื่อโฮสต์}"
 			  ]
 			},
 			"path": "/?ed=2560",
 			"type": "ws"
 		  },
 		  "type": "\u0076\u006c\u0065\u0073\u0073",
-		  "uuid": "${userID}"
+		  "uuid": "${หมายเลขผู้ใช้}"
 		},
 		{
 		  "server": "${IP10}",
@@ -1437,7 +1437,7 @@ return `{
 		  "tag": "CF_V10_${IP10}_${PT10}",
 		  "tls": {
 			"enabled": true,
-			"server_name": "${hostName}",
+			"server_name": "${ชื่อโฮสต์}",
 			"insecure": false,
 			"utls": {
 			  "enabled": true,
@@ -1448,14 +1448,14 @@ return `{
 		  "transport": {
 			"headers": {
 			  "Host": [
-				"${hostName}"
+				"${ชื่อโฮสต์}"
 			  ]
 			},
 			"path": "/?ed=2560",
 			"type": "ws"
 		  },
 		  "type": "\u0076\u006c\u0065\u0073\u0073",
-		  "uuid": "${userID}"
+		  "uuid": "${หมายเลขผู้ใช้}"
 		},
 		{
 		  "server": "${IP11}",
@@ -1463,7 +1463,7 @@ return `{
 		  "tag": "CF_V11_${IP11}_${PT11}",
 		  "tls": {
 			"enabled": true,
-			"server_name": "${hostName}",
+			"server_name": "${ชื่อโฮสต์}",
 			"insecure": false,
 			"utls": {
 			  "enabled": true,
@@ -1474,14 +1474,14 @@ return `{
 		  "transport": {
 			"headers": {
 			  "Host": [
-				"${hostName}"
+				"${ชื่อโฮสต์}"
 			  ]
 			},
 			"path": "/?ed=2560",
 			"type": "ws"
 		  },
 		  "type": "\u0076\u006c\u0065\u0073\u0073",
-		  "uuid": "${userID}"
+		  "uuid": "${หมายเลขผู้ใช้}"
 		},
 		{
 		  "server": "${IP12}",
@@ -1489,7 +1489,7 @@ return `{
 		  "tag": "CF_V12_${IP12}_${PT12}",
 		  "tls": {
 			"enabled": true,
-			"server_name": "${hostName}",
+			"server_name": "${ชื่อโฮสต์}",
 			"insecure": false,
 			"utls": {
 			  "enabled": true,
@@ -1500,14 +1500,14 @@ return `{
 		  "transport": {
 			"headers": {
 			  "Host": [
-				"${hostName}"
+				"${ชื่อโฮสต์}"
 			  ]
 			},
 			"path": "/?ed=2560",
 			"type": "ws"
 		  },
 		  "type": "\u0076\u006c\u0065\u0073\u0073",
-		  "uuid": "${userID}"
+		  "uuid": "${หมายเลขผู้ใช้}"
 		},
 		{
 		  "server": "${IP13}",
@@ -1515,7 +1515,7 @@ return `{
 		  "tag": "CF_V13_${IP13}_${PT13}",
 		  "tls": {
 			"enabled": true,
-			"server_name": "${hostName}",
+			"server_name": "${ชื่อโฮสต์}",
 			"insecure": false,
 			"utls": {
 			  "enabled": true,
@@ -1526,14 +1526,14 @@ return `{
 		  "transport": {
 			"headers": {
 			  "Host": [
-				"${hostName}"
+				"${ชื่อโฮสต์}"
 			  ]
 			},
 			"path": "/?ed=2560",
 			"type": "ws"
 		  },
 		  "type": "\u0076\u006c\u0065\u0073\u0073",
-		  "uuid": "${userID}"
+		  "uuid": "${หมายเลขผู้ใช้}"
 		},
 		{
 		  "tag": "direct",
@@ -1642,12 +1642,12 @@ return `{
 	}`
 }
 
-function getptyConfig(userID, hostName) {
-	const \u0076\u006c\u0065\u0073\u0073share = btoa(`\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP8}:${PT8}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V8_${IP8}_${PT8}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP9}:${PT9}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V9_${IP9}_${PT9}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP10}:${PT10}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V10_${IP10}_${PT10}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP11}:${PT11}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V11_${IP11}_${PT11}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP12}:${PT12}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V12_${IP12}_${PT12}\n\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${IP13}:${PT13}?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#CF_V13_${IP13}_${PT13}`);	
+function getptyConfig(หมายเลขผู้ใช้, ชื่อโฮสต์) {
+	const \u0076\u006c\u0065\u0073\u0073share = btoa(`\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP8}:${PT8}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V8_${IP8}_${PT8}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP9}:${PT9}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V9_${IP9}_${PT9}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP10}:${PT10}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V10_${IP10}_${PT10}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP11}:${PT11}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V11_${IP11}_${PT11}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP12}:${PT12}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V12_${IP12}_${PT12}\n\u0076\u006c\u0065\u0073\u0073\u003A//${หมายเลขผู้ใช้}\u0040${IP13}:${PT13}?encryption=none&security=tls&sni=${ชื่อโฮสต์}&fp=randomized&type=ws&host=${ชื่อโฮสต์}&path=%2F%3Fed%3D2560#CF_V13_${IP13}_${PT13}`);	
 		return `${\u0076\u006c\u0065\u0073\u0073share}`
 	}
 	
-function getpclConfig(userID, hostName) {
+function getpclConfig(หมายเลขผู้ใช้, ชื่อโฮสต์) {
 return `
 port: 7890
 allow-lan: true
@@ -1682,85 +1682,85 @@ proxies:
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP8.replace(/[\[\]]/g, '')}
   port: ${PT8}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: true
   network: ws
-  servername: ${hostName}
+  servername: ${ชื่อโฮสต์}
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V9_${IP9}_${PT9}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP9.replace(/[\[\]]/g, '')}
   port: ${PT9}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: true
   network: ws
-  servername: ${hostName}
+  servername: ${ชื่อโฮสต์}
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V10_${IP10}_${PT10}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP10.replace(/[\[\]]/g, '')}
   port: ${PT10}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: true
   network: ws
-  servername: ${hostName}
+  servername: ${ชื่อโฮสต์}
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V11_${IP11}_${PT11}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP11.replace(/[\[\]]/g, '')}
   port: ${PT11}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: true
   network: ws
-  servername: ${hostName}
+  servername: ${ชื่อโฮสต์}
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V12_${IP12}_${PT12}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP12.replace(/[\[\]]/g, '')}
   port: ${PT12}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: true
   network: ws
-  servername: ${hostName}
+  servername: ${ชื่อโฮสต์}
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 - name: CF_V13_${IP13}_${PT13}
   type: \u0076\u006c\u0065\u0073\u0073
   server: ${IP13.replace(/[\[\]]/g, '')}
   port: ${PT13}
-  uuid: ${userID}
+  uuid: ${หมายเลขผู้ใช้}
   udp: false
   tls: true
   network: ws
-  servername: ${hostName}
+  servername: ${ชื่อโฮสต์}
   ws-opts:
     path: "/?ed=2560"
     headers:
-      Host: ${hostName}
+      Host: ${ชื่อโฮสต์}
 
 พร็อกซี-groups:
 - name: 负载均衡
@@ -1807,7 +1807,7 @@ rules:
   - MATCH,🌍选择พร็อกซี`
 }
 		
-function getpsbConfig(userID, hostName) {
+function getpsbConfig(หมายเลขผู้ใช้, ชื่อโฮสต์) {
 return `{
 		  "log": {
 			"disabled": false,
@@ -1921,7 +1921,7 @@ return `{
 			  "tag": "CF_V8_${IP8}_${PT8}",
 			  "tls": {
 				"enabled": true,
-				"server_name": "${hostName}",
+				"server_name": "${ชื่อโฮสต์}",
 				"insecure": false,
 				"utls": {
 				  "enabled": true,
@@ -1932,14 +1932,14 @@ return `{
 			  "transport": {
 				"headers": {
 				  "Host": [
-					"${hostName}"
+					"${ชื่อโฮสต์}"
 				  ]
 				},
 				"path": "/?ed=2560",
 				"type": "ws"
 			  },
 			  "type": "\u0076\u006c\u0065\u0073\u0073",
-			  "uuid": "${userID}"
+			  "uuid": "${หมายเลขผู้ใช้}"
 			},
 			{
 			  "server": "${IP9}",
@@ -1947,7 +1947,7 @@ return `{
 			  "tag": "CF_V9_${IP9}_${PT9}",
 			  "tls": {
 				"enabled": true,
-				"server_name": "${hostName}",
+				"server_name": "${ชื่อโฮสต์}",
 				"insecure": false,
 				"utls": {
 				  "enabled": true,
@@ -1958,14 +1958,14 @@ return `{
 			  "transport": {
 				"headers": {
 				  "Host": [
-					"${hostName}"
+					"${ชื่อโฮสต์}"
 				  ]
 				},
 				"path": "/?ed=2560",
 				"type": "ws"
 			  },
 			  "type": "\u0076\u006c\u0065\u0073\u0073",
-			  "uuid": "${userID}"
+			  "uuid": "${หมายเลขผู้ใช้}"
 			},
 			{
 			  "server": "${IP10}",
@@ -1973,7 +1973,7 @@ return `{
 			  "tag": "CF_V10_${IP10}_${PT10}",
 			  "tls": {
 				"enabled": true,
-				"server_name": "${hostName}",
+				"server_name": "${ชื่อโฮสต์}",
 				"insecure": false,
 				"utls": {
 				  "enabled": true,
@@ -1984,14 +1984,14 @@ return `{
 			  "transport": {
 				"headers": {
 				  "Host": [
-					"${hostName}"
+					"${ชื่อโฮสต์}"
 				  ]
 				},
 				"path": "/?ed=2560",
 				"type": "ws"
 			  },
 			  "type": "\u0076\u006c\u0065\u0073\u0073",
-			  "uuid": "${userID}"
+			  "uuid": "${หมายเลขผู้ใช้}"
 			},
 			{
 			  "server": "${IP11}",
@@ -1999,7 +1999,7 @@ return `{
 			  "tag": "CF_V11_${IP11}_${PT11}",
 			  "tls": {
 				"enabled": true,
-				"server_name": "${hostName}",
+				"server_name": "${ชื่อโฮสต์}",
 				"insecure": false,
 				"utls": {
 				  "enabled": true,
@@ -2010,14 +2010,14 @@ return `{
 			  "transport": {
 				"headers": {
 				  "Host": [
-					"${hostName}"
+					"${ชื่อโฮสต์}"
 				  ]
 				},
 				"path": "/?ed=2560",
 				"type": "ws"
 			  },
 			  "type": "\u0076\u006c\u0065\u0073\u0073",
-			  "uuid": "${userID}"
+			  "uuid": "${หมายเลขผู้ใช้}"
 			},
 			{
 			  "server": "${IP12}",
@@ -2025,7 +2025,7 @@ return `{
 			  "tag": "CF_V12_${IP12}_${PT12}",
 			  "tls": {
 				"enabled": true,
-				"server_name": "${hostName}",
+				"server_name": "${ชื่อโฮสต์}",
 				"insecure": false,
 				"utls": {
 				  "enabled": true,
@@ -2036,14 +2036,14 @@ return `{
 			  "transport": {
 				"headers": {
 				  "Host": [
-					"${hostName}"
+					"${ชื่อโฮสต์}"
 				  ]
 				},
 				"path": "/?ed=2560",
 				"type": "ws"
 			  },
 			  "type": "\u0076\u006c\u0065\u0073\u0073",
-			  "uuid": "${userID}"
+			  "uuid": "${หมายเลขผู้ใช้}"
 			},
 			{
 			  "server": "${IP13}",
@@ -2051,7 +2051,7 @@ return `{
 			  "tag": "CF_V13_${IP13}_${PT13}",
 			  "tls": {
 				"enabled": true,
-				"server_name": "${hostName}",
+				"server_name": "${ชื่อโฮสต์}",
 				"insecure": false,
 				"utls": {
 				  "enabled": true,
@@ -2062,14 +2062,14 @@ return `{
 			  "transport": {
 				"headers": {
 				  "Host": [
-					"${hostName}"
+					"${ชื่อโฮสต์}"
 				  ]
 				},
 				"path": "/?ed=2560",
 				"type": "ws"
 			  },
 			  "type": "\u0076\u006c\u0065\u0073\u0073",
-			  "uuid": "${userID}"
+			  "uuid": "${หมายเลขผู้ใช้}"
 			},
 			{
 			  "tag": "direct",
