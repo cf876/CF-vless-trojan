@@ -677,7 +677,7 @@ ${displayHtml}
 			<hr>
 			<br>	
 			<br>
-			<h3>3：聚合通用、Cแคลช-meta、Sร้องเพลง订阅链接如下：</h3>
+			<h3>3：聚合通用、Cแคลช-meta、Sร้องเพลง-box订阅链接如下：</h3>
 			<hr>
 			<p>注意：<br>1、默认每个订阅链接包含TLS+非TLS共13个端口节点<br>2、当前workers域名作为订阅链接，需通过代理进行订阅更新<br>3、如使用的客户端不支持分片功能，则TLS节点不可用</p>
 			<hr>
@@ -729,7 +729,7 @@ ${displayHtml}
 					<table class="table">
 					<thead>
 						<tr>
-							<th>Sร้องเพลง订阅链接：</th>
+							<th>Sร้องเพลง-box订阅链接：</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -795,7 +795,7 @@ ${displayHtml}
 			<hr>
             <br>
             <br>
-			<h3>2：聚合通用、Cแคลช-meta、Sร้องเพลง订阅链接如下：</h3>
+			<h3>2：聚合通用、Cแคลช-meta、Sร้องเพลง-box订阅链接如下：</h3>
 			<hr>
 			<p>注意：以下订阅链接仅6个TLS端口节点</p>
 			<hr>
@@ -847,7 +847,7 @@ ${displayHtml}
 					<table class="table">
 					<thead>
 						<tr>
-							<th>Sร้องเพลง订阅链接：</th>
+							<th>Sร้องเพลง-box订阅链接：</th>
 						</tr>
 					</thead>
 					<tbody>
