@@ -1,7 +1,7 @@
-//NT自动填充พร็อกซีไอพี，无需且不支持พร็อกซีไอพี设置
+//แนท64自动填充ยืมยี่ห้ออื่น，无需且不支持ยืมยี่ห้ออื่น设置
 import { connect } from "cloudflare:sockets";
 const WS_READY_STATE_OPEN = 1;
-let userID = "86c50e3a-5b87-49dd-bd20-03c7f2735e40";
+let userID = "123e4567-e89b-12d3-a456-426655440000";
 const cn_hostnames = [''];
 let CDNIP = '\u0077\u0077\u0077\u002e\u0076\u0069\u0073\u0061\u002e\u0063\u006f\u006d\u002e\u0073\u0067'
 // http_ip
@@ -41,7 +41,7 @@ let PT13 = '2096'
 export default {
   /**
    * @param {any} request
-   * @param {{uuid: string, พร็อกซีไอพี: string, cdnip: string, ip1: string, ip2: string, ip3: string, ip4: string, ip5: string, ip6: string, ip7: string, ip8: string, ip9: string, ip10: string, ip11: string, ip12: string, ip13: string, pt1: string, pt2: string, pt3: string, pt4: string, pt5: string, pt6: string, pt7: string, pt8: string, pt9: string, pt10: string, pt11: string, pt12: string, pt13: string}} env
+   * @param {{uuid: string, ยืมยี่ห้ออื่น: string, cdnip: string, ip1: string, ip2: string, ip3: string, ip4: string, ip5: string, ip6: string, ip7: string, ip8: string, ip9: string, ip10: string, ip11: string, ip12: string, ip13: string, pt1: string, pt2: string, pt3: string, pt4: string, pt5: string, pt6: string, pt7: string, pt8: string, pt9: string, pt10: string, pt11: string, pt12: string, pt13: string}} env
    * @param {any} ctx
    * @returns {Promise<Response>}
    */
@@ -231,7 +231,7 @@ async function handle\u0076\u006c\u0065\u0073\u0073WebSocket(request) {
           udpStreamWrite(rawClientData);
           return;
         } else {
-          throw new Error('UDP代理仅支持DNS(端口53)');
+          throw new Error('UDPพร็อกซี仅支持DNS(端口53)');
         }
       }
 
@@ -247,7 +247,7 @@ async function handle\u0076\u006c\u0065\u0073\u0073WebSocket(request) {
         return tcpSocket;
       }
 
-      function convertToNTIPv6(ipv4Address) {
+      function convertToแนท64IPv6(ipv4Address) {
         const parts = ipv4Address.split('.');
         if (parts.length !== 4) {
           throw new Error('无效的IPv4地址');
@@ -278,7 +278,7 @@ async function handle\u0076\u006c\u0065\u0073\u0073WebSocket(request) {
             const aRecord = dnsResult.Answer.find(record => record.type === 1);
             if (aRecord) {
               const ipv4Address = aRecord.data;
-              return convertToNTIPv6(ipv4Address);
+              return convertToแนท64IPv6(ipv4Address);
             }
           }
           throw new Error('无法解析域名的IPv4地址');
@@ -289,10 +289,10 @@ async function handle\u0076\u006c\u0065\u0073\u0073WebSocket(request) {
 
       async function retry() {
         try {
-          const พร็อกซีไอพี = await getIPv6ProxyAddress(result.addressRemote);
-          console.log(`尝试通过NT IPv6地址 ${พร็อกซีไอพี} 连接...`);
+          const ยืมยี่ห้ออื่น = await getIPv6ProxyAddress(result.addressRemote);
+          console.log(`尝试通过แนท64 IPv6地址 ${ยืมยี่ห้ออื่น} 连接...`);
           const tcpSocket = await connect({
-            hostname: พร็อกซีไอพี,
+            hostname: ยืมยี่ห้ออื่น,
             port: result.portRemote
           });
           remoteSocket = tcpSocket;
@@ -301,7 +301,7 @@ async function handle\u0076\u006c\u0065\u0073\u0073WebSocket(request) {
           writer.releaseLock();
 
           tcpSocket.closed.catch(error => {
-            console.error('NT IPv6连接关闭错误:', error);
+            console.error('แนท64 IPv6连接关闭错误:', error);
           }).finally(() => {
             if (serverWS.readyState === WS_READY_STATE_OPEN) {
               serverWS.close(1000, '连接已关闭');
@@ -310,8 +310,8 @@ async function handle\u0076\u006c\u0065\u0073\u0073WebSocket(request) {
           
           pipeRemoteToWebSocket(tcpSocket, serverWS, \u0076\u006c\u0065\u0073\u0073RespHeader, null);
         } catch (err) {
-          console.error('NT IPv6连接失败:', err);
-          serverWS.close(1011, 'NT IPv6连接失败: ' + err.message);
+          console.error('แนท64 IPv6连接失败:', err);
+          serverWS.close(1011, 'แนท64 IPv6连接失败: ' + err.message);
         }
       }
 
@@ -554,7 +554,7 @@ async function handleUDPOutBound(webSocket, \u0076\u006c\u0065\u0073\u0073Respon
 function get\u0076\u006c\u0065\u0073\u0073Config(userID, hostName) {
   const w\u0076\u006c\u0065\u0073\u0073ws = `\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${CDNIP}:8880?encryption=none&security=none&type=ws&host=${hostName}&path=%2F%3Fed%3D2560#${hostName}`;
   const p\u0076\u006c\u0065\u0073\u0073wstls = `\u0076\u006c\u0065\u0073\u0073\u003A//${userID}\u0040${CDNIP}:8443?encryption=none&security=tls&type=ws&host=${hostName}&sni=${hostName}&fp=random&path=%2F%3Fed%3D2560#${hostName}`;
-  const note = `甬哥博客地址：https://ygkkk.blogspot.com\n甬哥YouTube频道：https://www.youtube.com/@ygkkk\n甬哥TG电报群组：https://t.me/ygkkktg\n甬哥TG电报频道：https://t.me/ygkkktgpd\n\nพร็อกซีไอพี使用NT自动生成，无需设置`;
+  const note = `甬哥博客地址：https://ygkkk.blogspot.com\n甬哥YouTube频道：https://www.youtube.com/@ygkkk\n甬哥TG电报群组：https://t.me/ygkkktg\n甬哥TG电报频道：https://t.me/ygkkktgpd\n\nยืมยี่ห้ออื่น使用แนท64自动生成，无需设置`;
   const ty = `https://${hostName}/${userID}/ty`
   const cl = `https://${hostName}/${userID}/cl`
   const sb = `https://${hostName}/${userID}/sb`
@@ -606,7 +606,7 @@ ${displayHtml}
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>Cloudflare-workers/pages-\u0076\u006c\u0065\u0073\u0073代理脚本 V25.5.27</h1>
+            <h1>Cloudflare-workers/pages-\u0076\u006c\u0065\u0073\u0073พร็อกซี脚本 V25.5.27</h1>
 	    <hr>
             <p>${noteshow}</p>
             <hr>
@@ -614,12 +614,12 @@ ${displayHtml}
 	    <hr>
             <br>
             <br>
-            <h3>1：CF-workers-\u0076\u006c\u0065\u0073\u0073+ws节点</h3>
+            <h3>1：CF-workers-\u0076\u006c\u0065\u0073\u0073+wsโหนด</h3>
 			<table class="table">
 				<thead>
 					<tr>
-						<th>节点特色：</th>
-						<th>单节点链接如下：</th>
+						<th>โหนด特色：</th>
+						<th>单โหนด链接如下：</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -645,12 +645,12 @@ ${displayHtml}
 			<hr>
             <br>
             <br>
-            <h3>2：CF-workers-\u0076\u006c\u0065\u0073\u0073+ws+tls节点</h3>
+            <h3>2：CF-workers-\u0076\u006c\u0065\u0073\u0073+ws+tlsโหนด</h3>
 			<table class="table">
 				<thead>
 					<tr>
-						<th>节点特色：</th>
-						<th>单节点链接如下：</th>
+						<th>โหนด特色：</th>
+						<th>单โหนด链接如下：</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -677,9 +677,9 @@ ${displayHtml}
 			<hr>
 			<br>	
 			<br>
-			<h3>3：聚合通用、Clash-meta、Sing-box订阅链接如下：</h3>
+			<h3>3：聚合通用、Cแคลช-meta、Sกล่องร้องเพลงสมัครสมาชิก链接如下：</h3>
 			<hr>
-			<p>注意：<br>1、默认每个订阅链接包含TLS+非TLS共13个端口节点<br>2、当前workers域名作为订阅链接，需通过代理进行订阅更新<br>3、如使用的客户端不支持分片功能，则TLS节点不可用</p>
+			<p>注意：<br>1、默认每个สมัครสมาชิก链接包含TLS+非TLS共13个端口โหนด<br>2、当前workers域名作为สมัครสมาชิก链接，需通过พร็อกซี进行สมัครสมาชิก更新<br>3、如使用的客户端不支持分片功能，则TLSโหนด不可用</p>
 			<hr>
 
 
@@ -701,7 +701,7 @@ ${displayHtml}
 			<table class="table">
 					<thead>
 						<tr>
-							<th>聚合通用订阅链接：</th>
+							<th>聚合通用สมัครสมาชิก链接：</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -715,7 +715,7 @@ ${displayHtml}
 				<table class="table">
 						<thead>
 							<tr>
-								<th>Clash-meta订阅链接：</th>
+								<th>Cแคลช-metaสมัครสมาชิก链接：</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -729,7 +729,7 @@ ${displayHtml}
 					<table class="table">
 					<thead>
 						<tr>
-							<th>Sing-box订阅链接：</th>
+							<th>Sกล่องร้องเพลงสมัครสมาชิก链接：</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -755,7 +755,7 @@ ${displayHtml}
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>Cloudflare-workers/pages-\u0076\u006c\u0065\u0073\u0073代理脚本 V25.5.27</h1>
+            <h1>Cloudflare-workers/pages-\u0076\u006c\u0065\u0073\u0073พร็อกซี脚本 V25.5.27</h1>
 			<hr>
             <p>${noteshow}</p>
             <hr>
@@ -763,12 +763,12 @@ ${displayHtml}
 			<hr>
             <br>
             <br>
-            <h3>1：CF-pages/workers/自定义域-\u0076\u006c\u0065\u0073\u0073+ws+tls节点</h3>
+            <h3>1：CF-pages/workers/自定义域-\u0076\u006c\u0065\u0073\u0073+ws+tlsโหนด</h3>
 			<table class="table">
 				<thead>
 					<tr>
-						<th>节点特色：</th>
-						<th>单节点链接如下：</th>
+						<th>โหนด特色：</th>
+						<th>单โหนด链接如下：</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -795,9 +795,9 @@ ${displayHtml}
 			<hr>
             <br>
             <br>
-			<h3>2：聚合通用、Clash-meta、Sing-box订阅链接如下：</h3>
+			<h3>2：聚合通用、Cแคลช-meta、Sกล่องร้องเพลงสมัครสมาชิก链接如下：</h3>
 			<hr>
-			<p>注意：以下订阅链接仅6个TLS端口节点</p>
+			<p>注意：以下สมัครสมาชิก链接仅6个TLS端口โหนด</p>
 			<hr>
 
 
@@ -819,7 +819,7 @@ ${displayHtml}
 			<table class="table">
 					<thead>
 						<tr>
-							<th>聚合通用订阅链接：</th>
+							<th>聚合通用สมัครสมาชิก链接：</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -833,7 +833,7 @@ ${displayHtml}
 				<table class="table">
 						<thead>
 							<tr>
-								<th>Clash-meta订阅链接：</th>
+								<th>Cแคลช-metaสมัครสมาชิก链接：</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -847,7 +847,7 @@ ${displayHtml}
 					<table class="table">
 					<thead>
 						<tr>
-							<th>Sing-box订阅链接：</th>
+							<th>Sกล่องร้องเพลงสมัครสมาชิก链接：</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -1119,7 +1119,7 @@ proxy-groups:
     - CF_V12_${IP12}_${PT12}
     - CF_V13_${IP13}_${PT13}
 
-- name: 🌍选择代理
+- name: 🌍选择พร็อกซี
   type: select
   proxies:
     - 负载均衡
@@ -1142,7 +1142,7 @@ proxy-groups:
 rules:
   - GEOIP,LAN,DIRECT
   - GEOIP,CN,DIRECT
-  - MATCH,🌍选择代理`
+  - MATCH,🌍选择พร็อกซี`
 }
 	
 function getsbConfig(userID, hostName) {
@@ -1153,7 +1153,7 @@ return `{
 		"timestamp": true
 	  },
 	  "experimental": {
-		"clash_api": {
+		"Cแคลช_api": {
 		  "external_controller": "127.0.0.1:9090",
 		  "external_ui": "ui",
 		  "external_ui_download_url": "",
@@ -1191,11 +1191,11 @@ return `{
 			"disable_cache": true
 		  },
 		  {
-			"clash_mode": "Global",
+			"Cแคลช_mode": "Global",
 			"server": "proxydns"
 		  },
 		  {
-			"clash_mode": "Direct",
+			"Cแคลช_mode": "Direct",
 			"server": "localdns"
 		  },
 		  {
@@ -1607,11 +1607,11 @@ return `{
                         "action": "reject"
                          },
 		  {
-			"clash_mode": "Direct",
+			"Cแคลช_mode": "Direct",
 			"outbound": "direct"
 		  },
 		  {
-			"clash_mode": "Global",
+			"Cแคลช_mode": "Global",
 			"outbound": "select"
 		  },
 		  {
@@ -1788,7 +1788,7 @@ proxy-groups:
     - CF_V12_${IP12}_${PT12}
     - CF_V13_${IP13}_${PT13}
 
-- name: 🌍选择代理
+- name: 🌍选择พร็อกซี
   type: select
   proxies:
     - 负载均衡
@@ -1804,7 +1804,7 @@ proxy-groups:
 rules:
   - GEOIP,LAN,DIRECT
   - GEOIP,CN,DIRECT
-  - MATCH,🌍选择代理`
+  - MATCH,🌍选择พร็อกซี`
 }
 		
 function getpsbConfig(userID, hostName) {
@@ -1815,7 +1815,7 @@ return `{
 			"timestamp": true
 		  },
 		  "experimental": {
-			"clash_api": {
+			"Cแคลช_api": {
 			  "external_controller": "127.0.0.1:9090",
 			  "external_ui": "ui",
 			  "external_ui_download_url": "",
@@ -1853,11 +1853,11 @@ return `{
 				"disable_cache": true
 			  },
 			  {
-				"clash_mode": "Global",
+				"Cแคลช_mode": "Global",
 				"server": "proxydns"
 			  },
 			  {
-				"clash_mode": "Direct",
+				"Cแคลช_mode": "Direct",
 				"server": "localdns"
 			  },
 			  {
@@ -2136,11 +2136,11 @@ return `{
                           "action": "reject"
                           },
 			  {
-				"clash_mode": "Direct",
+				"Cแคลช_mode": "Direct",
 				"outbound": "direct"
 			  },
 			  {
-				"clash_mode": "Global",
+				"Cแคลช_mode": "Global",
 				"outbound": "select"
 			  },
 			  {
