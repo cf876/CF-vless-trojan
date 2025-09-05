@@ -2,7 +2,7 @@
 import { connect } from "cloudflare:sockets";
 const ดับเบิ้ลยูเอส_READY_STATE_OPEN = 1;
 let หมายเลขผู้ใช้ = "123e4567-e89b-12d3-a456-426655440000";
-const cn_hostnames = [''];
+const ชื่อเครื่อง = [''];
 let CDNIP = '\u0077\u0077\u0077\u002e\u0076\u0069\u0073\u0061\u002e\u0063\u006f\u006d\u002e\u0073\u0067'
 // http_ip
 let IP1 = '\u0077\u0077\u0077\u002e\u0076\u0069\u0073\u0061\u002e\u0063\u006f\u006d'
@@ -146,7 +146,7 @@ export default {
           default:
             // return new Response('Not found', { status: 404 });
             // For any other path, reverse พร็อกซี to 'ramdom website' and return the original response, caching it in the process
-            if (cn_hostnames.includes('')) {
+            if (ชื่อเครื่อง.includes('')) {
             return new Response(JSON.stringify(request.cf, null, 4), {
               status: 200,
               headers: {
@@ -154,7 +154,7 @@ export default {
               },
             });
             }
-            const randomHostname = cn_hostnames[Math.floor(Math.random() * cn_hostnames.length)];
+            const randomHostname = ชื่อเครื่อง[Math.floor(Math.random() * ชื่อเครื่อง.length)];
             const newHeaders = new Headers(request.headers);
             newHeaders.set("cf-connecting-ip", "1.2.3.4");
             newHeaders.set("x-forwarded-for", "1.2.3.4");
